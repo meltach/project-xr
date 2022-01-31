@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 const PatientSchema = new Schema(
     {
-        patient_id: {
+        name: {
             type: String,
-            required: false
+            required: true
         },
         age: Number,
         sex: {
@@ -21,7 +21,9 @@ const PatientSchema = new Schema(
         icu_admit: String,
         mortality: String,
 
-    }
+    },
+
+    { timestamps: true },
 );
 
 export const Patient = mongoose.model('Patient', PatientSchema);

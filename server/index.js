@@ -4,6 +4,9 @@ import mongoose from 'mongoose'
 import dotenv from "dotenv";
 dotenv.config();
 import {router} from './routes/patient-router.js';
+/*importing router for exam: theimport issue starts here when it goes to exam,
+it cannot find module exam-controllers.js*/
+//import {examRouter} from './routes/exam-router.js';
 
 import { Patient } from "./models/patient-model.js";
 const app = express();
@@ -40,6 +43,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', router);
+//adding examRouter: commented out for impoting issue
+//app.use('/api', examRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

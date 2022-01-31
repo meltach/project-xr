@@ -12,7 +12,7 @@ const PatientTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(`/api/patient/data`);
+        const result = await axios.get(`/api/items`);
         const body = await result.data;
         setPatientInfo(body);
       } catch (error) {
