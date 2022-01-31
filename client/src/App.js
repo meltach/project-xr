@@ -16,12 +16,12 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<PatientTable />} exact />
-        <Route path="/patient-info" element={<PatientTable />} />
+        <Route path="/items" element={<PatientTable />} />
         <Route
-          path="/patient-info/:patient_id"
+          path="/item/:patient_id"
           element={<PatientDetailsPage />}
         />
-        <Route path="/patient-info/add" element={<AddPatient />} />
+        <Route path="/item/add" element={<AddPatient />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

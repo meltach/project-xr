@@ -19,10 +19,7 @@ export const getItems = async (req, res) => {
       });
     }
     console.log(`Fetching successful!`);
-    return res.status(200).json({
-      success: true,
-      items: items,
-    });
+    return res.status(200).json(items);
   }).catch(err => {
     console.error(`Error fetching the data': ${err}`);
     console.error(err);
@@ -50,10 +47,7 @@ export const getItemById = async (req, res) => {
       });
     }
     console.log(`[Hack.Diversity React Template] - 200 in 'getItemById': Item fetched!`);
-    return res.status(200).json({
-      success: true,
-      item: items[0],
-    });
+    return res.status(200).json(items[0]);
   }).catch(err => {
     console.error(`[Hack.Diversity React Template] - caught error in 'getItemById': ${err}`);
     console.error(err);
@@ -75,7 +69,7 @@ export const createItem = (req, res) => {
     });
   }
 
-  const item = new Patient(body);
+  const item = new Patient(body); //create new record
 
   if (!item) {
     console.error(`[Hack.Diversity React Template] - 400 in 'createItem': 'item' is malformed.`);
