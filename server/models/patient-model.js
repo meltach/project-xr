@@ -22,6 +22,7 @@ const PatientSchema = new Schema(
         mortality: String,
 
     }
+
 );
 
 export const Patient = mongoose.model('Patient', PatientSchema);
