@@ -1,5 +1,6 @@
 /* eslint-disable no-undef, arrow-body-style */
 
+import { Exam } from "../models/exam-model.js";
 import {Patient} from "../models/patient-model.js"
 
 export const getItems = async (req, res) => {
@@ -70,6 +71,7 @@ export const createItem = (req, res) => {
   }
 
   const item = new Patient(body); //create new record
+
 
   if (!item) {
     console.error(`[Hack.Diversity React Template] - 400 in 'createItem': 'item' is malformed.`);
@@ -184,3 +186,73 @@ export const deleteItem = async (req, res) => {
     return err;
   });
 };
+
+//Function for getting exam table: if the data exists, edit; if it doesn't, create exam
+export const createExam = (req, res) => {
+  const body = req.body;
+  //const id = "61f7c2452bbe5349500db6d0";
+  const id = req.params.id;
+  console.log(id);
+  // console.log('----------------------- createItem: req -----------------------')
+  // console.log(req);
+  // console.log('----------------------- createItem: body -----------------------')
+  // console.log(body);
+
+  if (!body) {
+    return res.status(400).json({
+      success: false,
+      error: 'You must provide an item.',
+    });
+  }
+
+  //check this
+  // const patient = await getItemById(req.body._id);
+  // console.log(patient);
+  const item = new Exam({
+    image: body.image,
+    score: body.score,
+    examInfo: body.examInfo,
+    date: body.date,
+    keyFindings: body.keyFindings,
+    patient: id
+  }); //create new record
+
+  if (!item) {
+    console.error(`[Hack.Diversity React Template] - 400 in 'createItem': 'item' is malformed.`);
+    return res.status(400).json({
+      success: false,
+      message: "'item' is malformed",
+    });
+  }
+
+  // console.log('----------------------- createItem: item -----------------------')
+   console.log(item);
+
+  return item
+    .save()
+    .then(() => {
+      console.error(`[Hack.Diversity React Template] - 201 in 'createExam': Exam item created!`);
+      return res.status(201).json({
+        success: true,
+        id: item._id,
+        message: 'Item created!',
+      });
+    })
+    .catch(err => {
+      console.error(`[Hack.Diversity React Template] - caught error in 'createExam'`);
+      Object.keys(err.errors).forEach(errorKey => {
+        console.error(`[Hack.Diversity React Template] ERROR for: ${errorKey}`);
+        console.error(
+          `[Hack.Diversity React Template] => ${
+            ((err.errors[errorKey] || {}).properties || {}).message
+          }`,
+        );
+      });
+      return res.status(400).json({
+        success: false,
+        error: err.errors,
+        message: err.errors.name,
+      });
+    });
+};
+
