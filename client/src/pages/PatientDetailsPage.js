@@ -70,7 +70,7 @@ const PatientDetailsPage = () => {
           <CardMedia
             component="img"
             sx={{ width: 300 }}
-            image="https://source.unsplash.com/random/900x700/?fruit"
+            image="https://res.cloudinary.com/dsz9wkhc6/image/upload/v1643587219/YelpCamp/efibagisn27xjtzzpyky.png"
             alt="Random photo"
           />
         </Card>
