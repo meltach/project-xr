@@ -10,10 +10,10 @@ import {getItems,
 
 export const router = express.Router();
 
-router.get('/items',  getItems);
-router.get('/item/:id',  getItemById);
-router.post('/item',  createItem);
-router.put('/item/:id',  updateItem);
-router.delete('/item/:id',  deleteItem);
+router.get('/patients',  getItems);
+router.get('/patient/:id',  getItemById);
+router.post('/patient',  createItem);
+router.put('/patient/:id',  updateItem);
+router.delete('/patient/:id',  deleteItem);
 
 // module.exports = router;
