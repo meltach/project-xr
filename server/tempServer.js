@@ -9,6 +9,7 @@ import { patientImgStudies } from "./tempSeeds/patientFormatedInfo.js";
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 8000;
+console.log(patientInfo);
 
 app.get("/api/patient/data", (req, res) => {
   res.status(200).json(patientInfo);
