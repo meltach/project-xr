@@ -1,12 +1,13 @@
 import express from 'express'
+import { Patient } from '../models/patient-model.js';
 
 // const  PatientController = require('../controllers/patient-controller');
 // import {PatientController} from '../controllers/patient-controller';
 import {getItems,
-    getItemById,
-    createItem,
-    updateItem,
-    deleteItem,
+    getPatientById,
+    createPatient,
+    updatePatient,
+    deletePatient,
     getExams,
     getExamById,
     createExam,
@@ -15,11 +16,11 @@ import {getItems,
 
 export const router = express.Router();
 
-router.get('/patients',  getItems);
-router.get('/patient/:id',  getItemById);
-router.post('/patient',  createItem);
-router.put('/patient/:id',  updateItem);
-router.delete('/patient/:id',  deleteItem);
+router.get('/patients',  getItems(Patient, "patients"));
+router.get('/patient/:id',  getPatientById);
+router.post('/patient',  createPatient);
+router.put('/patient/:id',  updatePatient);
+router.delete('/patient/:id',  deletePatient);
 
 router.get('/exams',  getExams);
 router.get('/exam/:id',  getExamById);

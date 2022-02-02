@@ -22,7 +22,7 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ marginBottom: "1rem" }}>
         <Toolbar>
-          <Link to={"/patient-info"} style={linkStyle}>
+          <Link to={"/patients"} style={linkStyle}>
             <IconButton
               size="large"
               edge="start"

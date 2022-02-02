@@ -24,6 +24,7 @@ const PatientSchema = new Schema(
     },
 
     { timestamps: true },
+    { versionKey: false }
 );
 
 export const Patient = mongoose.model('Patient', PatientSchema);
