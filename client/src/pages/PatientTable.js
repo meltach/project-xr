@@ -5,11 +5,19 @@ import Table from "../components/Table";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { Container, Alert } from "@mui/material";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 
-const PatientTable = () => {
+
+const PatientTable = ({patientDetail}) => {
   const [patientInfo, setPatientInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // const {key_findings, png_filename} = patientDetail;
+  // const patientObj = {key_findings, png_filename};
+
+  // console.log(patientInfo)
+  // console.log(patientObj)
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,9 +42,16 @@ const PatientTable = () => {
                 Header: "SUBJECT ID",
                 accessor: key,
                 Cell: ({ value }) => (
-                  <Link to={`/patients/${value}`}>{value}</Link>
+                  <div>
+                   <div>
+                   <AccountCircle/>
+                   </div>
+                  <Link to={`/patient/${value}`} component="link" underline="hover">{value}</Link>
+                  </div>
+                  
                 ),
-              };          
+              };
+                        
             return {
               Header: "COMORBIDITIES",
               columns: [

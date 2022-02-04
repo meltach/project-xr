@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import PatientTable from "./pages/PatientTable";
@@ -10,16 +10,17 @@ import AddPatient from "./pages/AddPatient";
 import { CssBaseline } from "@mui/material";
 
 function App() {
+  const [patientDetail, setPatientDetail] = useState([]);
   return (
     <Router>
       <CssBaseline />
       <Header />
       <Routes>
-        <Route path="/" element={<PatientTable />} exact />
-        <Route path="/patients" element={<PatientTable />} />
+        <Route path="/" element={<PatientTable patientDetail={patientDetail} />} exact />
+        <Route path="/patients" element={<PatientTable patientDetail={patientDetail} />} />
         <Route
           path="/patient/:patient_id"
-          element={<PatientDetailsPage />}
+          element={<PatientDetailsPage setPatientDetail={setPatientDetail} patientDetail={patientDetail} />}
         />
         <Route path="/patient/add" element={<AddPatient />} />
         <Route path="*" element={<NotFound />} />

@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Container, Paper } from "@mui/material";
 import { CardMedia } from "@mui/material";
 
-const PatientDetailsPage = () => {
+const PatientDetailsPage = ({patientDetail, setPatientDetail}) => {
   const { patient_id } = useParams();
-  const [patientDetail, setPatientDetail] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,15 +24,18 @@ const PatientDetailsPage = () => {
     fetchData();
   }, [patient_id]);
 
-  const { image_study_description, radiologist_key_findings } = patientDetail;
+  const { image_study_description, key_findings, png_filename } = patientDetail;
 
   return (
     <Container>
+      <Paper sx={{padding: "1rem", marginBottom: "1rem"}}>
       <h2>We will add edit button on this page</h2>
       <h3>
         We can add delete button here or add within the table on the main page
         🤔
       </h3>
+      <h3>Nicolas is on it!</h3>
+      </Paper>
       <div
         style={{
           display: "flex",
@@ -61,17 +62,17 @@ const PatientDetailsPage = () => {
             </Typography>
             <Paper variant="outlined">
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                {radiologist_key_findings}
+                {key_findings}
               </Typography>
             </Paper>
           </CardContent>
         </Card>
-        <Card sx={{ minWidth: 275 }}>
+        <Card sx={{ minWidth: 275, marginLeft: "1rem"}}>
           <CardMedia
             component="img"
             sx={{ width: 300 }}
-            image="https://res.cloudinary.com/dsz9wkhc6/image/upload/v1643587219/YelpCamp/efibagisn27xjtzzpyky.png"
-            alt="Random photo"
+            image={`https://ohif-hack-diversity-covid.s3.amazonaws.com/covid-png/${png_filename}`}
+            alt="xr-image"
           />
         </Card>
       </div>

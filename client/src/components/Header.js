@@ -51,7 +51,7 @@ export default function Header() {
               justifyContent: "space-between",
             }}
           >
-            <Link to={"/patient-info/add"} style={linkStyle}>
+            <Link to={"/patient/add"} style={linkStyle}>
               <Button
                 variant="outlined"
                 size="large"
