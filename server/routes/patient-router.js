@@ -1,33 +1,27 @@
 import express from 'express'
 import { Patient } from '../models/patient-model.js';
+import { Exam } from '../models/exam-model.js';
 
-// const  PatientController = require('../controllers/patient-controller');
-// import {PatientController} from '../controllers/patient-controller';
 import {getItems,
-    getPatientById,
-    createPatient,
-    updatePatient,
-    deletePatient,
-    getExams,
-    getExamById,
-    createExam,
-    updateExam,
-    deleteExam} from '../controllers/patient-controller.js';
+    getItemById,
+    createItem,
+    updateItem,
+    deleteItem,
+   } from '../controllers/patient-controller.js';
 
 export const router = express.Router();
 
 router.get('/patients',  getItems(Patient, "patients"));
-router.get('/patient/:id',  getPatientById);
-router.post('/patient',  createPatient);
-router.put('/patient/:id',  updatePatient);
-router.delete('/patient/:id',  deletePatient);
+router.get('/patient/:id',  getItemById(Patient, 'patient'));
+router.post('/patient',  createItem(Patient, "patient"));
+router.put('/patient/:id',  updateItem(Patient, "patient"));
+router.delete('/patient/:id',  deleteItem(Patient, "patient"));
 
-router.get('/exams',  getExams);
-router.get('/exam/:id',  getExamById);
-//router.post('/exam',  createExam); //working but need id
-router.post('/exam/:id',  createExam); //create exam table with an existing id on item table
-router.put('/exam/:id',  updateExam);
-router.delete('/exam/:id',  deleteExam);
+router.get('/exams',  getItems(Exam, "exams"));
+router.get('/exam/:id',  getItemById(Exam, 'exam'));
+router.post('/exam/:id',  createItem(Exam, "exam"));
+router.put('/exam/:id',  updateItem(Exam, "exam"));
+router.delete('/exam/:id',  deleteItem(Exam, "exam"));
 
 
 // module.exports = router;

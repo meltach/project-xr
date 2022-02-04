@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 import xlsx from "xlsx";
 
 
-const wb = xlsx.readFile(`${__dirname}/covid.xlsx`);
+const wb = xlsx.readFile(`${__dirname}/patient-data.xlsx`);
 // console.log(wb.SheetNames);
 const patientDataWb = wb.Sheets["Patient Data"];
 const imgStudiesWb = wb.Sheets["Imaging Studies"];
@@ -17,9 +17,9 @@ const imgStudiesWb = wb.Sheets["Imaging Studies"];
 // convert the excel file to json
 const xlsxToJson = (fileSheetName) => {
     // range removes the first line from the excel 
-  const range = xlsx.utils.decode_range(fileSheetName["!ref"]);
-  range.s.r = 1;
-  fileSheetName["!ref"] = xlsx.utils.encode_range(range);
+  // const range = xlsx.utils.decode_range(fileSheetName["!ref"]);
+  // range.s.r = 1;
+  // fileSheetName["!ref"] = xlsx.utils.encode_range(range);
   const data = xlsx.utils.sheet_to_json(fileSheetName);
 
     return data;

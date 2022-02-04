@@ -1,7 +1,6 @@
 /* eslint-disable no-undef, arrow-body-style */
 
 import { Exam } from "../models/exam-model.js";
-import {Patient} from "../models/patient-model.js"
 
 export const getItems = (schemaName, name) => {
   return async (req, res) => {
@@ -31,117 +30,107 @@ export const getItems = (schemaName, name) => {
 }
 
 
-export const getPatientById = async (req, res) => {
-  await Patient.find({ _id: req.params.id }, (err, patients) => {
+export const getItemById = (schemaName, name) => {
+
+return async (req, res) => {
+   
+  await schemaName.find({ _id: req.params.id }, (err, items) => {
     if (err) {
-      console.error(`Hack_avengers - 400 in 'getpatientById': ${err}`);
+      console.error(`Status 400: getItemsById: ${err}`);
       throw res.status(400).json({
         success: false,
         error: err,
       });
     }
-    if (!patients.length) {
-      console.error(`Hack_avengers - 404 in 'getpatientById': patient not found`);
+    if (!items.length) {
+      console.error(`Hack_avengers - 404 in 'getItemsById': ${name} not found`);
       return res.status(404).json({
         success: false,
-        error: 'patient not found',
+        error: `${name} not found`,
       });
     }
-    console.log(`Hack_avengers - 200 in 'getpatientById': patient fetched!`);
-    return res.status(200).json(patients[0]);
+    console.log(`Hack_avengers - 200 in 'getItemById': ${name} fetched!`);
+    return res.status(200).json(items[0]);
   }).catch(err => {
-    console.error(`Hack_avengers - caught error in 'getpatientById': ${err}`);
+    console.error(`Hack_avengers - caught error in 'getItemsById': ${err}`);
     console.error(err);
     return err;
   });
 };
+}
 
-export const createPatient = (req, res) => {
-  const body = req.body;
-  // console.log('----------------------- createpatient: req -----------------------')
-  // console.log(req);
-  // console.log('----------------------- createpatient: body -----------------------')
-  // console.log(body);
-
-  if (!body) {
-    return res.status(400).json({
-      success: false,
-      error: 'You must provide an patient.',
-    });
-  }
-
-  const patient = new Patient(body); //create new record
-
-
-  if (!patient) {
-    console.error(`Hack_avengers - 400 in 'createpatient': 'patient' is malformed.`);
-    return res.status(400).json({
-      success: false,
-      message: "'patient' is malformed",
-    });
-  }
-
-  // console.log('----------------------- createpatient: patient -----------------------')
-  // console.log(patient);
-
-  return patient
-    .save()
-    .then(() => {
-      console.error(`Hack_avengers - 201 in 'createpatient': patient created!`);
-      return res.status(201).json({
-        success: true,
-        id: patient._id,
-        message: 'patient created!',
-      });
-    })
-    .catch(err => {
-      console.error(`Hack_avengers - caught error in 'createpatient'`);
-      Object.keys(err.errors).forEach(errorKey => {
-        console.error(`Hack_avengers ERROR for: ${errorKey}`);
-        console.error(
-          `Hack_avengers => ${
-            ((err.errors[errorKey] || {}).properties || {}).message
-          }`,
-        );
-      });
+export const createItem = (schemaName, name) => {
+  return (req, res) => {
+    const body = req.body;
+   
+    // patient
+    if (!body) {
       return res.status(400).json({
         success: false,
-        error: err.errors,
-        message: err.errors.name,
+        error: `You must provide an ${name}.`,
       });
-    });
-};
+    }
 
-export const updatePatient = async (req, res) => {
+    const item = new schemaName(body); //create new record
+
+
+    if (!item) {
+      console.error(`Hack_avengers - 400 in create${name}: '${name}' is malformed.`);
+      return res.status(400).json({
+        success: false,
+        message: `'${name}' is malformed`,
+      });
+    }
+
+
+    return item
+      .save()
+      .then(() => {
+        console.error(`Hack_avengers - 201 in 'createItem': ${name} created!`);
+        return res.status(201).json({
+          success: true,
+          id: item._id,
+          message: `${name} created!`,
+        });
+      })
+      .catch(err => {
+        console.error(`Hack_avengers - caught error in 'createItem'`);
+        Object.keys(err.errors).forEach(errorKey => {
+          console.error(`Hack_avengers ERROR for: ${errorKey}`);
+          console.error(
+            `Hack_avengers => ${
+              ((err.errors[errorKey] || {}).properties || {}).message
+            }`,
+          );
+        });
+        return res.status(400).json({
+          success: false,
+          error: err.errors,
+          message: err.errors.name,
+        });
+      });
+  };
+}
+
+export const updateItem = (schemaName, name) => {
+return async (req, res) => {
   const body = req.body;
+  const arryOfItem = [body]
   if (!body) {
-    console.error(`Hack_avengers - 400 in 'updatepatient': You must provide an patient to update.`);
+    console.error(`Hack_avengers - 400 in 'update${name}': You must provide ${name} to update.`);
     return res.status(400).json({
       success: false,
-      error: 'You must provide an patient to update.',
+      error: `You must provide ${name} to update.`,
     });
   }
+  
+  const itemForUpdate = {...arryOfItem}[0]
 
-  const patientForUpdate = {
-    age: body.age,
-    sex: body.sex,
-    race: body.race,
-    zip: body.zip,
-    latest_bmi: body.latest_bmi,
-    latest_weight: body.latest_weight,
-    latest_height: body.latest_height,
-    test_name: body.test_name,
-    icu_admit: body.icu_admit,
-    mortality: body.mortality
-  };
-
-  // console.log('----------------------- updatepatient: res -----------------------');
-  // console.log(res);
 
   try {
-    await Patient.findOneAndUpdate({ _id: req.params.id }, patientForUpdate);
+    await schemaName.findOneAndUpdate({ _id: req.params.id }, itemForUpdate);
   } catch (err) {
-    console.error(`Hack_avengers - caught error in 'updatepatient': ${err}`);
+    console.error(`Hack_avengers - caught error in 'update${name}': ${err}`);
     console.error(err);
     return res.status(400).json({
       success: false,
@@ -149,42 +138,45 @@ export const updatePatient = async (req, res) => {
     });
   }
 
-  console.log(`Hack_avengers - 200 in 'updatepatient': patient updated!`);
+  console.log(`Hack_avengers - 200 in 'update${name}': ${name} updated!`);
   return res.status(200).json({
     success: true,
     id: req.params.id,
-    message: 'patient updated!',
+    message: `${name} updated!`,
   });
 };
+}
 
-export const deletePatient = async (req, res) => {
-  await Patient.findOneAndDelete({ _id: req.params.id }, (err, patient) => {
+export const deleteItem = (schemaName, name) => {
+  return async (req, res) => {
+    await schemaName.findOneAndDelete({ _id: req.params.id }, (err, item) => {
     if (err) {
-      console.error(`Hack_avengers - 400 in 'deletepatient': ${err}`);
+      console.error(`Hack_avengers - 400 in 'delete${name}': ${err}`);
       return res.status(400).json({
         succes: false,
         error: err,
       });
     }
 
-    if (!patient) {
-      console.error(`Hack_avengers - 400 in 'deletepatient': patient not found!`);
+    if (!item) {
+      console.error(`Hack_avengers - 400 in 'delete${name}': ${name} not found!`);
       return res.status(400).json({
         success: false,
-        error: 'patient not found!',
+        error: `${name} not found!`,
       });
     }
 
     return res.status(200).json({
       success: true,
-      patient: patient,
+      item: item,
     });
-  }).catch(err => {
-    console.error(`Hack_avengers - caught error in 'deletepatient': ${err}`);
+    }).catch(err => {
+    console.error(`Hack_avengers - caught error in 'delete${name}': ${err}`);
     console.error(err);
     return err;
-  });
+    });
 };
+}
 
 //**--------------------------------------EXAM TABLE------------------------------------ */
 //Function for getting exam table: if the data exists, edit; if it doesn't, create exam
