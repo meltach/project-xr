@@ -17,6 +17,7 @@ export const getItems = (schemaName, name) => {
         return res.status(200).json([]);
       }
       console.log(`Fetching successful!`);
+      console.log(items)
       return res.status(200).json(items);
     }).catch(err => {
       console.error(`Error fetching the data': ${err}`);
@@ -34,7 +35,10 @@ export const getItemById = (schemaName, name) => {
 
 return async (req, res) => {
    
-  await schemaName.find({ _id: req.params.id }, (err, items) => {
+  //   // name === "exam" ? {patient: req.params.id} : {_id: req.params.id}
+
+  // name === "exam" ? {patient: req.params.id} : {_id: req.params.id}
+  await schemaName.find(name === "exam" ? {patient: req.params.id} : {_id: req.params.id}, (err, items) => {
     if (err) {
       console.error(`Status 400: getItemsById: ${err}`);
       throw res.status(400).json({
@@ -62,6 +66,7 @@ return async (req, res) => {
 export const createItem = (schemaName, name) => {
   return (req, res) => {
     const body = req.body;
+    const id = req.params.id;
    
     // patient
     if (!body) {
@@ -71,7 +76,21 @@ export const createItem = (schemaName, name) => {
       });
     }
 
-    const item = new schemaName(body); //create new record
+    let item;
+    if(name === "exam") {
+      item = new Exam({
+        image: body.image,
+        score: body.score,
+        examInfo: body.examInfo,
+        date: body.date,
+        keyFindings: body.keyFindings,
+        patient: id
+      }); //create new record for exam
+      console.log(item)
+    } else {
+      item = new schemaName(body); //create new record
+    }
+  
 
 
     if (!item) {
